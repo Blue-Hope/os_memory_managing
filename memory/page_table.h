@@ -1,0 +1,29 @@
+#ifndef PAGE_TABLE
+#define PAGE_TABLE
+
+#include <vector>
+
+using namespace std;
+
+#define FREE -1
+#define INDEX_INITIALIZED -1
+
+template <typename T>
+class PageTable : public vector<T>
+{
+public:
+    int size;
+
+    PageTable() {}
+
+    PageTable(int _size)
+    {
+        size = _size;
+        for (int i = 0; i < size; i++)
+        {
+            this->push_back(T());
+        }
+    }
+};
+
+#endif
