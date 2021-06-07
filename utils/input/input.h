@@ -66,11 +66,11 @@ public:
     {
         ProcessInput process_input;
 
-        for (int i = 1; i < stoi(words[0]); i += 2)
+        for (int i = 1; i < stoi(words[0]) + 1; i++)
         {
             Operation operation;
-            operation.code = stoi(words[i]);
-            operation.argument = stoi(words[i + 1]);
+            operation.code = stoi(words[2 * i - 1]);
+            operation.argument = stoi(words[2 * i]);
 
             process_input.operations.push(operation);
         }

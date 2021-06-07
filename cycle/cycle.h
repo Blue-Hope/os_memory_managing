@@ -5,8 +5,8 @@
 class Cycle;
 #include "input.h"
 #include "argparse.h"
-#include "run_queues.h"
 #include "sleep_queue.h"
+#include "run_queues.h"
 #include "io_queue.h"
 #include "cpu_process.h"
 #include "base_memory.h"
@@ -16,6 +16,7 @@ using namespace std;
 
 #define TODO_INPUT "INPUT"
 #define RUN_QUEUE_COUNT 10
+#define DEFAULT_TIME_QUANTUM 10
 
 class Cycle
 {
@@ -25,12 +26,12 @@ public:
     int time_quantum = DEFAULT_TIME_QUANTUM;
     string dir;
     MetaInput meta_input;
-    RunQueues run_queues;
-    SleepQueue sleep_queue;
-    IoQueue io_queue;
-    CpuProcess cpu_process;
+    RunQueues *run_queues;
+    SleepQueue *sleep_queue;
+    IoQueue *io_queue;
+    CpuProcess *cpu_process;
     Todo target;
-    Memory memory;
+    Memory *memory;
 
     Cycle();
     Cycle(MetaInput _meta_input, Argument _argument);
@@ -49,8 +50,6 @@ public:
 
     void operate();
 
-    void print();
-
     bool is_todo_cycle();
 
     bool is_todo_input();
@@ -58,6 +57,8 @@ public:
     void reset_target();
 
     void reset_cpu_process();
+
+    bool is_whole_queues_empty();
 };
 
 #endif

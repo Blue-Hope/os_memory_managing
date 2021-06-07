@@ -6,7 +6,10 @@ class Process;
 #include "cycle.h"
 #endif
 
+using namespace std;
+
 #define RUN_QUEUE_COUNT 10
+#define FREE -1
 
 enum Opcode
 {
@@ -23,14 +26,15 @@ class Process
 public:
     ProcessInput process_input;
     int priority = RUN_QUEUE_COUNT;
-    int pid;
+    int pid = FREE;
+    bool alive;
     Cycle *cycle;
 
-    Process();
-
-    Process(Cycle *_cycle);
+    Process(Cycle *_cycle, bool _alive);
 
     void operate();
+
+    void print(Operation operation, int printarg);
 
     void sleep(int sleep_cycle);
 

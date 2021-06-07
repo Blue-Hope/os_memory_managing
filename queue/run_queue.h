@@ -1,17 +1,20 @@
-#ifndef RUN_QUEUE
-#define RUN_QUEUE
-
+#ifndef __RUN_QUEUE_H_INCLUDE
+#define __RUN_QUEUE_H_INCLUDE
+#ifndef __RUN_QUEUE_H_DEFINED
+#define __RUN_QUEUE_H_DEFINED
+class RunQueue;
 #include "queue.h"
-// #include "process.h"
+#include "process.h"
+#endif
 
-class RunQueue : public Queue<string>
+using namespace std;
+
+class RunQueue : public Queue<Process *>
 {
 public:
     int priority;
-    RunQueue(int _priority)
-    {
-        priority = _priority;
-    }
+
+    RunQueue(int _priority);
 };
 
 #endif

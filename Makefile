@@ -6,7 +6,11 @@ all: main.cpp
 		-I ./utils \
 		-I ./utils/input \
 		-o main \
-		main.cpp cycle/cycle.cpp process/process.cpp
+		-w \
+		main.cpp \
+		cycle/cycle.cpp \
+		process/process.cpp process/cpu_process.cpp process/sleep_process.cpp\
+		queue/queue.cpp queue/run_queues.cpp queue/run_queue.cpp queue/sleep_queue.cpp queue/io_queue.cpp
 
 clean:
 	rm main

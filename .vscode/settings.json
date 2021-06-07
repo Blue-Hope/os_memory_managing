@@ -44,6 +44,12 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "queue": "cpp",
+        "__split_buffer": "cpp",
+        "__locale": "cpp",
+        "locale": "cpp",
+        "__config": "cpp",
+        "ios": "cpp"
     }
 }

@@ -1,7 +1,10 @@
-#ifndef SLEEP_PROCESS
-#define SLEEP_PROCESS
-
+#ifndef __SLEEP_PROCESS_H_INCLUDE
+#define __SLEEP_PROCESS_H_INCLUDE
+#ifndef __SLEEP_PROCESS_H_DEFINED
+#define __SLEEP_PROCESS_H_DEFINED
+class SleepProcess;
 #include "process.h"
+#endif
 
 class SleepProcess
 {
@@ -9,11 +12,7 @@ public:
     Process *process;
     int sleep_cycle;
 
-    SleepProcess(Process *_process, int _sleep_cycle)
-    {
-        process = _process;
-        sleep_cycle = _sleep_cycle;
-    }
+    SleepProcess(Process *_process, int _sleep_cycle);
 };
 
 #endif

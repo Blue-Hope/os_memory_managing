@@ -1,30 +1,23 @@
-#ifndef RUN_QUEUES
-#define RUN_QUEUES
-
+#ifndef __RUN_QUEUES_H_INCLUDE
+#define __RUN_QUEUES_H_INCLUDE
+#ifndef __RUN_QUEUES_H_DEFINED
+#define __RUN_QUEUES_H_DEFINED
+class RunQueues;
 #include <vector>
 #include "run_queue.h"
-// #include "process.h"
+#include "cpu_process.h"
+#endif
 
 using namespace std;
 
-class RunQueues : public vector<RunQueue>
+class RunQueues : public vector<RunQueue *>
 {
 public:
-    // void push_by_priority(Process *process)
-    // {
-    //     this->at(process->priority).push_back(process);
-    // }
+    void push_by_priority(Process *process);
 
-    // Process *get_prior_process(Process *cpu_process)
-    // {
-    //     for (int i = 0; i < cpu_process->priority; i++)
-    //     {
-    //         RunQueue run_queue = this->at(cpu_process->priority);
-    //         if (!run_queue.empty())
-    //             return run_queue.pop();
-    //     }
-    //     return cpu_process;
-    // }
+    CpuProcess *get_prior_process(Process *cpu_process, int time_quantum);
+
+    bool check_empty();
 };
 
 #endif

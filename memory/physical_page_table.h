@@ -2,17 +2,18 @@
 #define PHYSICAL_PAGE_TABLE
 
 #include <math.h>
+#include "virtual_page_table.h"
 #include "page_table.h"
 
 #define INF 10000000
 
 struct PhysicalPage
 {
-    VirtualPage *virtual_page;
-    int reference_count = FREE;
+    VirtualPage *virtual_page = new VirtualPage();
+    int reference_count = INF;
 };
 
-class PhysicalPageTable : public PageTable<PhysicalPage>
+class PhysicalPageTable : public PageTable<PhysicalPage *, PhysicalPage>
 {
 public:
     int allocation_id = 0;
@@ -21,27 +22,32 @@ public:
 
     PhysicalPageTable() {}
 
-    PhysicalPageTable(int _size, string _algorithm)
+    PhysicalPageTable(int _size, string _algorithm) : PageTable(_size)
     {
         algorithm = _algorithm;
     }
 
-    int buddy(int _size)
+    int get_divided_size(int _size)
     {
         int k = 0;
         while (true)
         {
-            if (pow(2, k - 1) < _size && pow(2, k) <= _size)
+            if (pow(2, k - 1) < _size && _size <= pow(2, k))
                 break;
             k++;
         }
-        int divided_size = pow(2, k);
+        return pow(2, k);
+    }
+
+    int buddy(int _size)
+    {
+        int divided_size = get_divided_size(_size);
         for (int i = 0; i < size; i += divided_size)
         {
             bool is_free = true;
             for (int j = 0; j < divided_size; j++)
             {
-                if (this->at(i + j).virtual_page->allocation_id != FREE)
+                if (this->at(i + j)->virtual_page->allocation_id != FREE)
                     is_free = false;
             }
             if (is_free)
@@ -56,10 +62,10 @@ public:
         int least_allocation_id = INDEX_INITIALIZED;
         for (auto iter : *this)
         {
-            if (iter.reference_count < least_reference_count)
+            if (iter->reference_count < least_reference_count)
             {
-                least_reference_count = iter.reference_count;
-                least_allocation_id = iter.virtual_page->allocation_id;
+                least_reference_count = iter->reference_count;
+                least_allocation_id = iter->virtual_page->allocation_id;
             }
         }
         replace(least_allocation_id);
@@ -97,16 +103,17 @@ public:
             page_replacement();
         }
 
-        for (int i = 0; i < _virtual_page->size; i++)
+        if (_virtual_page->allocation_id == FREE)
         {
-            this->at(start + i).virtual_page = _virtual_page;
-            this->at(start + i).reference_count = reference_count;
-            if (this->at(start + i).virtual_page->allocation_id == FREE)
-            {
-                this->at(start + i).virtual_page->allocation_id = allocation_id;
-                allocation_id++;
-            }
-            this->at(start + i).virtual_page->valid = 1;
+            _virtual_page->allocation_id = allocation_id;
+            allocation_id++;
+        }
+        _virtual_page->valid = 1;
+
+        for (int i = 0; i < get_divided_size(_virtual_page->size); i++)
+        {
+            this->at(start + i)->virtual_page = _virtual_page;
+            this->at(start + i)->reference_count = reference_count;
         }
     }
 
@@ -114,11 +121,10 @@ public:
     {
         for (auto iter : *this)
         {
-            if (iter.virtual_page->allocation_id == _allocation_id)
+            if (iter->virtual_page->allocation_id == _allocation_id)
             {
-                iter.virtual_page->allocation_id = FREE;
-                iter.virtual_page->valid = 0;
-                iter.virtual_page = NULL;
+                iter->virtual_page->valid = 0;
+                iter->virtual_page = new VirtualPage();
             }
         }
     }
@@ -127,14 +133,9 @@ public:
     {
         for (auto iter : *this)
         {
-            if (iter.virtual_page->allocation_id == _allocation_id)
+            if (iter->virtual_page->allocation_id == _allocation_id)
             {
-                iter.virtual_page->page_id = FREE;
-                iter.virtual_page->allocation_id = FREE;
-                iter.virtual_page->valid = FREE;
-                iter.virtual_page->ref = FREE;
-                iter.virtual_page->size = FREE;
-                iter.virtual_page = NULL;
+                iter->virtual_page = new VirtualPage();
             }
         }
     }
@@ -144,9 +145,24 @@ public:
         reference_count++;
         for (auto iter : *this)
         {
-            if (iter.virtual_page->allocation_id == _allocation_id)
-                iter.reference_count == reference_count;
+            if (iter->virtual_page->allocation_id == _allocation_id)
+                iter->reference_count == reference_count;
         }
+    }
+
+    void print()
+    {
+        int cnt = 1;
+        printf("|");
+        for (auto iter : *this)
+        {
+            string allocation_id = iter->virtual_page->allocation_id == FREE ? "-" : to_string(iter->virtual_page->allocation_id);
+            printf("%s", allocation_id.c_str());
+            if (cnt % 4 == 0)
+                printf("|");
+            cnt++;
+        }
+        printf("\n");
     }
 };
 

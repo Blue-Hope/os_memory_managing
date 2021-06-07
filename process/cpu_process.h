@@ -17,7 +17,7 @@ public:
 
     CpuProcess() {}
 
-    CpuProcess(Process *_process);
+    CpuProcess(Process *_process, int time_quantum = DEFAULT_TIME_QUANTUM);
 
     void operate();
 

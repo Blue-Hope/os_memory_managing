@@ -5,9 +5,11 @@
 
 using namespace std;
 
+#define FREE -1
+
 struct Operation
 {
-    int code;
+    int code = FREE;
     int argument;
 };
 struct ProcessInput

@@ -12,12 +12,12 @@ struct VirtualPage
     int size = FREE;
 };
 
-class VirtualPageTable : public PageTable<VirtualPage>
+class VirtualPageTable : public PageTable<VirtualPage *, VirtualPage>
 {
 public:
     VirtualPageTable() {}
 
-    VirtualPageTable(int _size) {}
+    VirtualPageTable(int _size) : PageTable(_size) {}
 
     int pushable_index(int _size)
     {
@@ -25,22 +25,20 @@ public:
         int end = INDEX_INITIALIZED;
         for (int i = 0; i < size; i++)
         {
-            if (this->at(i).page_id == FREE && start == INDEX_INITIALIZED)
+            if (this->at(i)->page_id == FREE && start == INDEX_INITIALIZED)
                 start = i;
 
-            if (this->at(i).page_id != FREE && start != INDEX_INITIALIZED && end == INDEX_INITIALIZED)
-                end = i;
-
-            if (this->at(i).page_id == FREE && start != INDEX_INITIALIZED && end == INDEX_INITIALIZED && i == size - 1)
-                end = i + 1;
-
-            if (start != INDEX_INITIALIZED && end != INDEX_INITIALIZED)
+            if (this->at(i)->page_id != FREE)
             {
-                if (_size <= end - start)
-                    return start;
                 start = INDEX_INITIALIZED;
                 end = INDEX_INITIALIZED;
             }
+
+            if (this->at(i)->page_id == FREE && start != INDEX_INITIALIZED)
+                end = i;
+
+            if (start != INDEX_INITIALIZED && end != INDEX_INITIALIZED && _size <= end - start + 1)
+                return start;
         }
         throw;
     };
@@ -49,8 +47,8 @@ public:
     {
         for (auto iter : *this)
         {
-            if (iter.page_id == _page_id)
-                return &iter;
+            if (iter->page_id == _page_id)
+                return iter;
         }
         throw;
     }
@@ -58,11 +56,24 @@ public:
     void allocate(int _page_id, int _size)
     {
         int start = this->pushable_index(_size);
+
+        VirtualPage *virtual_page = new VirtualPage();
+        virtual_page->page_id = _page_id;
+        virtual_page->valid = 0;
+        virtual_page->size = _size;
+
         for (int i = 0; i < _size; i++)
         {
-            this->at(i).page_id = _page_id;
-            this->at(i).valid = 0;
-            this->at(i).size = _size;
+            this->at(start + i) = virtual_page;
+        }
+    }
+
+    void release(int _allocation_id)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            if (this->at(i)->allocation_id == _allocation_id)
+                this->at(i) = new VirtualPage();
         }
     }
 };

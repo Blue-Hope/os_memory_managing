@@ -1,29 +1,19 @@
-#ifndef SLEEP_QUEUE
-#define SLEEP_QUEUE
-
+#ifndef __SLEEP_QUEUE_H_INCLUDE
+#define __SLEEP_QUEUE_H_INCLUDE
+#ifndef __SLEEP_QUEUE_H_DEFINED
+#define __SLEEP_QUEUE_H_DEFINED
+class SleepQueue;
 #include "queue.h"
-// #include "sleep_process.h"
-
-class SleepQueue : public Queue<string>
+#include "sleep_process.h"
+#endif
+class SleepQueue : public Queue<SleepProcess *>
 {
 public:
-    // void push_process(Process *process, int sleep_cycle)
-    // {
-    //     SleepProcess sleep_process = SleepProcess(process, sleep_cycle);
-    //     this->push_back(sleep_process);
-    // }
+    void push_process(Process *process, int sleep_cycle);
 
-    // vector<Process *> get_woke_up_processes()
-    // {
-    //     vector<Process *> processes;
-    //     for (auto iter : *this)
-    //     {
-    //         iter.sleep_cycle -= 1;
-    //         if (iter.sleep_cycle <= 0)
-    //             processes.push_back(iter.process);
-    //     }
-    //     return processes;
-    // }
+    vector<Process *> get_woke_up_processes();
+
+    bool check_empty();
 };
 
 #endif

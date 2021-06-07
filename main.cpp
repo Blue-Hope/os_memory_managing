@@ -11,6 +11,11 @@ int main(int argc, char **argv)
     while (true)
     {
         cycle.run();
+        if (cycle.is_whole_queues_empty())
+        {
+            break;
+        }
+        printf("\n");
     }
     return 0;
 }

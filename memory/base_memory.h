@@ -32,18 +32,21 @@ public:
         virtual_memory_map.erase(pid);
     }
 
-    void allocate(int pid, int _size)
+    int allocate(int pid, int _size)
     {
-        virtual_memory_map[pid].allocate(_size);
+        return virtual_memory_map[pid].allocate(_size);
     }
 
-    void release(int pid, int _page_id)
+    int release(int pid, int _page_id)
     {
         VirtualPage *virtual_page = virtual_memory_map[pid].page_table.get_virtual_page(_page_id);
+        int size = virtual_page->size;
         physical_memory.release(virtual_page->allocation_id);
+        virtual_memory_map[pid].release(virtual_page->allocation_id);
+        return size;
     }
 
-    void access(int pid, int _page_id)
+    int access(int pid, int _page_id)
     {
         VirtualPage *virtual_page = virtual_memory_map[pid].page_table.get_virtual_page(_page_id);
         if (virtual_page->valid == 0)
@@ -54,6 +57,21 @@ public:
         {
             physical_memory.access(virtual_page->allocation_id);
         }
+        return virtual_page->size;
+    }
+
+    void print()
+    {
+        printf("%-29s", ">> Physical Memory: ");
+        physical_memory.print();
+        for (auto &iter : virtual_memory_map)
+        {
+            iter.second.print_page_id(iter.first);
+            iter.second.print_allocation_id(iter.first);
+            iter.second.print_valid(iter.first);
+            iter.second.print_ref(iter.first);
+        }
+        printf("\n");
     }
 };
 
