@@ -3,6 +3,8 @@
 
 #include "virtual_page_table.h"
 
+#define REF_BYTE_SIZE 8
+
 using namespace std;
 
 class VirtualMemory
@@ -28,6 +30,20 @@ public:
     void release(int _allocation_id)
     {
         page_table.release(_allocation_id);
+    }
+
+    void update_ref()
+    {
+        for (auto iter : page_table)
+        {
+            int new_sample_ref = 0;
+            if (iter->ref == 1)
+            {
+                new_sample_ref += pow(2, 8);
+            }
+            iter->sample_ref /= 2;
+            iter->sample_ref += new_sample_ref;
+        }
     }
 
     void print_page_id(int pid)

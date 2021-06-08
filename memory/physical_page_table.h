@@ -18,6 +18,7 @@ class PhysicalPageTable : public PageTable<PhysicalPage *, PhysicalPage>
 public:
     int allocation_id = 0;
     int reference_count = 0;
+    int clock_allocation_id = -1;
     string algorithm;
 
     PhysicalPageTable() {}
@@ -70,8 +71,58 @@ public:
         }
         replace(least_allocation_id);
     }
-    void sampled() {}
-    void clock() {}
+
+    void sampled()
+    {
+        int least_sampled_reference_count = INF;
+        int least_allocation_id = INF;
+        for (auto iter : *this)
+        {
+            if (iter->virtual_page->sample_ref < least_sampled_reference_count &&
+                iter->virtual_page->allocation_id < least_allocation_id)
+            {
+                least_sampled_reference_count = iter->virtual_page->sample_ref;
+                least_allocation_id = iter->virtual_page->allocation_id;
+            }
+        }
+        replace(least_allocation_id);
+    }
+
+    void clock()
+    {
+        while (true)
+        {
+            int minimal_allocation_id = INF;
+            for (auto iter : *this)
+            {
+                if (iter->virtual_page->allocation_id < minimal_allocation_id &&
+                    iter->virtual_page->allocation_id > clock_allocation_id)
+                    minimal_allocation_id = iter->virtual_page->allocation_id;
+            }
+            if (minimal_allocation_id == INF)
+            {
+                clock_allocation_id = FREE;
+                continue;
+            }
+            for (auto iter : *this)
+            {
+                if (iter->virtual_page->allocation_id == minimal_allocation_id)
+                {
+                    if (iter->virtual_page->ref == 1)
+                    {
+                        iter->virtual_page->ref = 0;
+                        continue;
+                    }
+                    if (iter->virtual_page->ref == 0)
+                    {
+                        clock_allocation_id = iter->virtual_page->allocation_id;
+                        replace(clock_allocation_id);
+                        return;
+                    }
+                }
+            }
+        }
+    }
 
     void page_replacement()
     {
@@ -124,6 +175,8 @@ public:
             if (iter->virtual_page->allocation_id == _allocation_id)
             {
                 iter->virtual_page->valid = 0;
+                if (algorithm == "sampled" || algorithm == "clock")
+                    iter->virtual_page->ref = 0;
                 iter->virtual_page = new VirtualPage();
             }
         }
@@ -147,6 +200,15 @@ public:
         {
             if (iter->virtual_page->allocation_id == _allocation_id)
                 iter->reference_count == reference_count;
+        }
+    }
+
+    void access_ref(int _allocation_id)
+    {
+        for (auto iter : *this)
+        {
+            if (iter->virtual_page->allocation_id == _allocation_id)
+                iter->virtual_page->ref = 1;
         }
     }
 

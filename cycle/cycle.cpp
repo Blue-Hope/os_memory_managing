@@ -37,6 +37,7 @@ void Cycle::run()
     }
     run_to_cpu();
     operate();
+    memory->update_ref(cycle);
     cycle++;
 }
 

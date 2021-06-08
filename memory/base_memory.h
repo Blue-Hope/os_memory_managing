@@ -2,6 +2,7 @@
 #define MEMORY
 
 #include <map>
+#include "math.h"
 #include "virtual_memory.h"
 #include "physical_page_table.h"
 
@@ -57,7 +58,23 @@ public:
         {
             physical_memory.access(virtual_page->allocation_id);
         }
+        if (physical_memory.algorithm == "sampled" ||
+            physical_memory.algorithm == "clock")
+        {
+            physical_memory.access_ref(virtual_page->allocation_id);
+        }
         return virtual_page->size;
+    }
+
+    void update_ref(int cycle)
+    {
+        if (cycle % 8 == 7)
+        {
+            for (auto &iter : virtual_memory_map)
+            {
+                iter.second.update_ref();
+            }
+        }
     }
 
     void print()

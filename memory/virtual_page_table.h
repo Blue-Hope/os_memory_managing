@@ -10,6 +10,7 @@ struct VirtualPage
     int valid = FREE;
     int ref = FREE;
     int size = FREE;
+    int sample_ref = 0;
 };
 
 class VirtualPageTable : public PageTable<VirtualPage *, VirtualPage>
