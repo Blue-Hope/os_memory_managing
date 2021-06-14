@@ -14,6 +14,7 @@ class RunQueue : public Queue<Process *>
 public:
     int priority;
 
+    // run queue for get process by each priority
     RunQueue(int _priority);
 };
 

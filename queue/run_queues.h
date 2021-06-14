@@ -12,6 +12,8 @@ using namespace std;
 
 class RunQueues : public vector<RunQueue *>
 {
+    // runqueues for 9 runquee.
+    // distinguish from priority.
 public:
     void push_by_priority(Process *process);
 

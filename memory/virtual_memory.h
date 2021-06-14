@@ -10,6 +10,7 @@ using namespace std;
 class VirtualMemory
 {
 public:
+    // manage virtual memory for process level.
     VirtualPageTable page_table;
     int page_id = 0;
 
@@ -22,6 +23,7 @@ public:
 
     int allocate(int _size)
     {
+        // allocate new memory.
         page_table.allocate(page_id, _size);
         page_id++;
         return page_id - 1;
@@ -34,6 +36,7 @@ public:
 
     void update_ref()
     {
+        // update ref for sampled algorithm.
         for (auto iter : page_table)
         {
             int new_sample_ref = 0;
@@ -46,67 +49,71 @@ public:
         }
     }
 
-    void print_page_id(int pid)
+    void print_page_id(int pid, FILE* out)
     {
-        printf(">> pid(%d)%-20s", pid, " Page Table(PID): ");
+        fprintf(out, ">> pid(%d)%-20s", pid, " Page Table(PID): ");
         int cnt = 1;
-        printf("|");
+        fprintf(out, "|");
         for (auto iter : page_table)
         {
             string page_id = iter->page_id == FREE ? "-" : to_string(iter->page_id);
-            printf("%s", page_id.c_str());
+            fprintf(out, "%s", page_id.c_str());
             if (cnt % 4 == 0)
-                printf("|");
+                fprintf(out, "|");
             cnt++;
         }
-        printf("\n");
+        fprintf(out, "\n");
     }
 
-    void print_allocation_id(int pid)
+    void print_allocation_id(int pid, FILE* out)
     {
-        printf(">> pid(%d)%-20s", pid, " Page Table(AID): ");
+        // print.
+        fprintf(out, ">> pid(%d)%-20s", pid, " Page Table(AID): ");
         int cnt = 1;
-        printf("|");
+        fprintf(out,"|");
         for (auto iter : page_table)
         {
             string allocation_id = iter->allocation_id == FREE ? "-" : to_string(iter->allocation_id);
-            printf("%s", allocation_id.c_str());
+            fprintf(out, "%s", allocation_id.c_str());
             if (cnt % 4 == 0)
-                printf("|");
+                fprintf(out, "|");
             cnt++;
         }
-        printf("\n");
+        fprintf(out, "\n");
     }
 
-    void print_valid(int pid)
+    void print_valid(int pid, FILE* out)
     {
-        printf(">> pid(%d)%-20s", pid, " Page Table(Valid): ");
+        // print.
+        fprintf(out, ">> pid(%d)%-20s", pid, " Page Table(Valid): ");
         int cnt = 1;
-        printf("|");
+        fprintf(out, "|");
         for (auto iter : page_table)
         {
             string valid = iter->valid == FREE ? "-" : to_string(iter->valid);
-            printf("%s", valid.c_str());
+            fprintf(out, "%s", valid.c_str());
             if (cnt % 4 == 0)
-                printf("|");
+                fprintf(out, "|");
             cnt++;
         }
-        printf("\n");
+        fprintf(out, "\n");
     }
 
-    void print_ref(int pid)
+    void print_ref(int pid, FILE* out)
     {
-        printf(">> pid(%d)%-20s", pid, " Page Table(Ref): ");
+        // print.
+        fprintf(out, ">> pid(%d)%-20s", pid, " Page Table(Ref): ");
         int cnt = 1;
-        printf("|");
+        fprintf(out, "|");
         for (auto iter : page_table)
         {
             string ref = iter->ref == FREE ? "-" : to_string(iter->ref);
-            printf("%s", ref.c_str());
+            fprintf(out, "%s", ref.c_str());
             if (cnt % 4 == 0)
-                printf("|");
+                fprintf(out, "|");
             cnt++;
         }
+        fprintf(out, "\n");
     }
 };
 

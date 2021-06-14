@@ -16,12 +16,14 @@ struct VirtualPage
 class VirtualPageTable : public PageTable<VirtualPage *, VirtualPage>
 {
 public:
+    // virtal page table, save each page for process
     VirtualPageTable() {}
 
     VirtualPageTable(int _size) : PageTable(_size) {}
 
     int pushable_index(int _size)
     {
+        // check if there is space left.
         int start = INDEX_INITIALIZED;
         int end = INDEX_INITIALIZED;
         for (int i = 0; i < size; i++)
@@ -46,6 +48,7 @@ public:
 
     VirtualPage *get_virtual_page(int _page_id)
     {
+        // get virtual page by page id
         for (auto iter : *this)
         {
             if (iter->page_id == _page_id)
@@ -56,6 +59,7 @@ public:
 
     void allocate(int _page_id, int _size)
     {
+        // new allocate to virtual memory.
         int start = this->pushable_index(_size);
 
         VirtualPage *virtual_page = new VirtualPage();
@@ -71,6 +75,7 @@ public:
 
     void release(int _allocation_id)
     {
+        // releas memory
         for (int i = 0; i < size; i++)
         {
             if (this->at(i)->allocation_id == _allocation_id)

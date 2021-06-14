@@ -8,6 +8,8 @@ class SleepQueue;
 #endif
 class SleepQueue : public Queue<SleepProcess *>
 {
+    // for sleep process.
+    // using new class 'sleep process' to save sleep count.
 public:
     void push_process(Process *process, int sleep_cycle);
 

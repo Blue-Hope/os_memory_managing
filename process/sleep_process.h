@@ -9,6 +9,7 @@ class SleepProcess;
 class SleepProcess
 {
 public:
+    // sleep process for save sleep cycle.
     Process *process;
     int sleep_cycle;
 

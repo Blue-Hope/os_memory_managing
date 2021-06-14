@@ -5,6 +5,7 @@
 
 using namespace std;
 
+// total meta data.
 struct Metadata
 {
     int total_op_count;
@@ -13,6 +14,7 @@ struct Metadata
     int frame_size;
 };
 
+// struct Todo for scheduling program.
 struct Todo
 {
     string name;

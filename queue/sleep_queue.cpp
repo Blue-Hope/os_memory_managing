@@ -2,12 +2,15 @@
 
 void SleepQueue::push_process(Process *process, int sleep_cycle)
 {
+    // set process to new Sleep process and push.
     SleepProcess *sleep_process = new SleepProcess(process, sleep_cycle);
     this->push_back(sleep_process);
 }
 
 vector<Process *> SleepQueue::get_woke_up_processes()
 {
+    // find the process which sleep count is 0.
+    // put it in vector and return vector.
     vector<Process *> processes;
     for (auto iter : *this)
     {
@@ -23,6 +26,7 @@ vector<Process *> SleepQueue::get_woke_up_processes()
 
 bool SleepQueue::check_empty()
 {
+    // check if empty.
     bool is_empty = true;
     for (auto iter : *this)
     {

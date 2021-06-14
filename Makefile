@@ -5,7 +5,7 @@ all: main.cpp
 		-I ./queue \
 		-I ./utils \
 		-I ./utils/input \
-		-o main \
+		-o project3 \
 		-w \
 		main.cpp \
 		cycle/cycle.cpp \

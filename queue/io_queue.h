@@ -9,6 +9,7 @@ class IoQueue;
 
 class IoQueue : public Queue<Process *>
 {
+    // set IoQueue.
 public:
     Process *search_pid(int pid);
 };

@@ -20,9 +20,15 @@ using namespace std;
 
 class Cycle
 {
+    // Cycle header for overall program execute management.
 public:
+    // save current proces id, current cycle, other queue and memory.
     int pid = 0;
     int cycle = 0;
+    bool is_todo;  // for print
+    bool is_input; // for print
+    string target_name;
+    int target_pid;
     int time_quantum = DEFAULT_TIME_QUANTUM;
     string dir;
     MetaInput meta_input;
