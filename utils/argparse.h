@@ -31,7 +31,7 @@ public:
 
     void get_dir(string s_argv)
     {
-        // get direcotry from argv. 
+        // get direcotry from argv.
         if (s_argv.find("-dir") != -1)
         {
             dir = s_argv.substr(5, s_argv.length() - 1);

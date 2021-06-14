@@ -12,7 +12,7 @@ using namespace std;
 
 template <typename T>
 class Queue : public vector<T>
-{ 
+{
     //deafult queue for other queues.
 public:
     T pop();

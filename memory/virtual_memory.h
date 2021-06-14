@@ -49,7 +49,7 @@ public:
         }
     }
 
-    void print_page_id(int pid, FILE* out)
+    void print_page_id(int pid, FILE *out)
     {
         fprintf(out, ">> pid(%d)%-20s", pid, " Page Table(PID): ");
         int cnt = 1;
@@ -65,12 +65,12 @@ public:
         fprintf(out, "\n");
     }
 
-    void print_allocation_id(int pid, FILE* out)
+    void print_allocation_id(int pid, FILE *out)
     {
         // print.
         fprintf(out, ">> pid(%d)%-20s", pid, " Page Table(AID): ");
         int cnt = 1;
-        fprintf(out,"|");
+        fprintf(out, "|");
         for (auto iter : page_table)
         {
             string allocation_id = iter->allocation_id == FREE ? "-" : to_string(iter->allocation_id);
@@ -82,7 +82,7 @@ public:
         fprintf(out, "\n");
     }
 
-    void print_valid(int pid, FILE* out)
+    void print_valid(int pid, FILE *out)
     {
         // print.
         fprintf(out, ">> pid(%d)%-20s", pid, " Page Table(Valid): ");
@@ -99,7 +99,7 @@ public:
         fprintf(out, "\n");
     }
 
-    void print_ref(int pid, FILE* out)
+    void print_ref(int pid, FILE *out)
     {
         // print.
         fprintf(out, ">> pid(%d)%-20s", pid, " Page Table(Ref): ");

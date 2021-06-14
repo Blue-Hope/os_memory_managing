@@ -12,7 +12,7 @@ using namespace std;
 class CpuProcess
 {
     // for the currntly runnung process
-    // save the time quantum. 
+    // save the time quantum.
 public:
     Process *process;
     int time_quantum = DEFAULT_TIME_QUANTUM;

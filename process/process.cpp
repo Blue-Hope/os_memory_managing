@@ -145,30 +145,37 @@ void Process::print_scheduler(Operation operation, int printarg)
 
     // line1
     fprintf(write_scheduler, "[%d Cycle] Scheduled: ", cycle->cycle);
-    if(cycle->is_todo){
+    if (cycle->is_todo)
+    {
         fprintf(write_scheduler, "%d %s (priority %d)\n", cycle->target_pid, cycle->target_name.c_str(), priority);
-        }
-    else{
+    }
+    else
+    {
         fprintf(write_scheduler, "None\n");
     }
 
     //line2
     int line = line_num - process_input.operations.size();
     fprintf(write_scheduler, "Runnung Process: ");
-    if(alive){
+    if (alive)
+    {
         fprintf(write_scheduler, "Process#%d(%d) running code %s line %d(op %d, arg %d)\n", pid, priority, name.c_str(), line, operation.code, printarg);
     }
-    else{
+    else
+    {
         fprintf(write_scheduler, "None\n");
     }
 
     //line3
-    for(auto iter : *cycle->run_queues){
+    for (auto iter : *cycle->run_queues)
+    {
         fprintf(write_scheduler, "RunQueue %d: ", iter->priority);
-        if(iter->empty())
+        if (iter->empty())
             fprintf(write_scheduler, "Empty");
-        else{
-            for(auto node : *iter){
+        else
+        {
+            for (auto node : *iter)
+            {
                 fprintf(write_scheduler, "%d(%s) ", node->pid, node->name.c_str());
             }
         }
@@ -177,11 +184,14 @@ void Process::print_scheduler(Operation operation, int printarg)
 
     //line4
     fprintf(write_scheduler, "SleepList: ");
-    if(cycle->sleep_queue->check_empty()){
+    if (cycle->sleep_queue->check_empty())
+    {
         fprintf(write_scheduler, "Empty");
     }
-    else{
-        for(auto iter : *cycle->sleep_queue){
+    else
+    {
+        for (auto iter : *cycle->sleep_queue)
+        {
             fprintf(write_scheduler, "%d(%s) ", iter->process, iter->process->name.c_str());
         }
     }
@@ -189,11 +199,14 @@ void Process::print_scheduler(Operation operation, int printarg)
 
     //line5
     fprintf(write_scheduler, "IOWait List: ");
-    if (cycle->io_queue->empty()){
+    if (cycle->io_queue->empty())
+    {
         fprintf(write_scheduler, "Empty");
     }
-    else{
-        for(auto iter : *cycle->io_queue){
+    else
+    {
+        for (auto iter : *cycle->io_queue)
+        {
             fprintf(write_scheduler, "%d(%s) ", iter->pid, iter->name.c_str());
         }
     }
@@ -201,7 +214,6 @@ void Process::print_scheduler(Operation operation, int printarg)
 
     //cycle end
     fprintf(write_scheduler, "\n");
-
 
     fclose(write_scheduler);
 }

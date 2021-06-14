@@ -13,7 +13,6 @@ class Memory
 {
     // base memory for manage overall memory
 public:
-
     // using metadata for get memory size,
     // make physicalpagetable for manage physical meomory
     // and map vitrual memory for manage each pid, and access each page id
@@ -26,7 +25,7 @@ public:
     Memory() {}
 
     Memory(Metadata _metadata, string _algorithm, string _dir)
-    {   
+    {
         // constructor for get meta data, algorith and directory
         dir = _dir;
         metadata = _metadata;
@@ -43,7 +42,8 @@ public:
     void unregister_process(int pid)
     {
         // when process execute all opcode, clean the memory and erase the page
-        for(auto iter:virtual_memory_map[pid].page_table){
+        for (auto iter : virtual_memory_map[pid].page_table)
+        {
             release(pid, iter->page_id);
         }
         virtual_memory_map.erase(pid);
@@ -78,13 +78,13 @@ public:
             physical_memory.allocate(virtual_page);
             page_fault++;
         }
-        
+
         else
         {
             // else, access to physical memory
             physical_memory.access(virtual_page->allocation_id);
         }
-            // if sampled or clodk, do other thing for ref bit.
+        // if sampled or clodk, do other thing for ref bit.
         if (physical_memory.algorithm == "sampled" ||
             physical_memory.algorithm == "clock")
         {
@@ -105,7 +105,7 @@ public:
         }
     }
 
-    void print(FILE* out)
+    void print(FILE *out)
     {
         // print
         fprintf(out, "%-29s", ">> Physical Memory: ");

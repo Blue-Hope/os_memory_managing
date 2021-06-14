@@ -12,7 +12,7 @@ template <typename T, typename K>
 class PageTable : public vector<T>
 {
 public:
-// base page table for virtual memory and physical memory
+    // base page table for virtual memory and physical memory
     int size;
 
     PageTable() {}

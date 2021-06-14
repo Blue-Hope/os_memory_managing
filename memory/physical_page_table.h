@@ -63,13 +63,13 @@ public:
 
     void lru()
     {
-        
+
         // lru algorithm
         int least_reference_count = INF;
         int least_allocation_id = INDEX_INITIALIZED;
         for (auto iter : *this)
         {
-            
+
             if (iter->reference_count < least_reference_count)
             {
                 least_reference_count = iter->reference_count;
@@ -238,7 +238,7 @@ public:
         }
     }
 
-    void print(FILE* out)
+    void print(FILE *out)
     {
         // print.
         int cnt = 1;

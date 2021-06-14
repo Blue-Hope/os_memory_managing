@@ -4,7 +4,6 @@ void RunQueues::push_by_priority(Process *process)
 {
     // get process to queue by each priority.
     this->at(process->priority)->push_back(process);
-
 }
 
 CpuProcess *RunQueues::get_prior_process(Process *process, int time_quantum)
